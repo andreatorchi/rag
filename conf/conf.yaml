@@ -1,0 +1,16 @@
+db:
+   type: chroma
+   path: chroma
+  
+embeddings:
+    type: ollama
+    model: nomic-embed-text
+
+model:
+    type: ollama
+    name: ifioravanti/llamantino-2
+
+data_path:
+    input_path: ./data/raw/ISTRUZIONE_OPERATIVA_CREAZIONE_VM_CLOUD_INSIEL_REV_00.pdf
+    export_output_path: ./data/scratch
+    export_output_filename: ISTRUZIONE_OPERATIVA_CREAZIONE_VM_CLOUD_INSIEL_REV_00-with-image-refs.html
