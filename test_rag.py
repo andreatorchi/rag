@@ -1,22 +1,26 @@
 from query_data import query_rag
 from langchain_community.llms.ollama import Ollama
+import yaml
+from dependencies.modelFactory import *
+
 
 CORRECTNESS_EVAL_PROMPT = """
 Expected Response: {expected_response}
 Actual Response: {actual_response}
 ---
 (Answer with 'true' or 'false') Does the actual response match or contains the expected response? 
-A grounded value of True means that the answer meets all of the criteria.
-A grounded value of False means that the answer does not meet all of the criteria.
+A value of True means that the answer meets all of the criteria.
+A value of False means that the answer does not meet all of the criteria.
 """
+
 
 RELEVANCE_EVAL_PROMPT = """
 question: {question}
 given response: {actual_response}
 ---
 (Answer with 'true' or 'false') Is the given response relevant to the question useful to answer the question? 
-A grounded value of True means that the answer meets all of the criteria.
-A grounded value of False means that the answer does not meet all of the criteria.
+A relevance value of True means that the answer meets all of the criteria.
+A relevance value of False means that the answer does not meet all of the criteria.
 """
 
 
@@ -30,7 +34,6 @@ A grounded value of False means that the answer does not meet all of the criteri
 """
 
 
-
 RETRIEVAL_RELEVANCE_EVAL_PROMPT = """
 question: {question}
 given facts: {docs}
@@ -42,6 +45,11 @@ A relevance value of True means that the FACTS contain ANY keywords or semantic 
 A relevance value of False means that the FACTS are completely unrelated to the QUESTION.
 """
 
+with open('conf/conf.yaml') as file:
+    conf = yaml.full_load(file)
+
+
+
 def test_htpervisor():
     assert query_and_validate(
         question="che genere di hypervisor è presente su ogni host fisico?",
@@ -49,11 +57,13 @@ def test_htpervisor():
     )
 
 
+
 def test_dns():
     assert query_and_validate(
         question="come viene fornito fornisce il servizio DNS? ",
         expected_response="Active Directory",
     )
+
 
 def test_networking():
     assert query_and_validate(
@@ -64,7 +74,7 @@ def test_networking():
 
 def query_and_validate(question: str, expected_response: str):
     response_text, relevant_docs = query_rag(question)
-    model = Ollama(model="ifioravanti/llamantino-2")
+    model = modelFactory.getModel(conf["model"]) #model = Ollama(model="ifioravanti/llamantino-2")
 
     prompt = CORRECTNESS_EVAL_PROMPT.format(expected_response=expected_response, actual_response=response_text)
     evaluation_results_str = model.invoke(prompt)
