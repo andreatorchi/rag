@@ -9,8 +9,8 @@ Expected Response: {expected_response}
 Actual Response: {actual_response}
 ---
 (Answer with 'true' or 'false') Does the actual response match or contains the expected response? 
-A grounded value of True means that the answer meets all of the criteria.
-A grounded value of False means that the answer does not meet all of the criteria.
+A value of True means that the answer meets all of the criteria.
+A value of False means that the answer does not meet all of the criteria.
 """
 
 
@@ -19,8 +19,8 @@ question: {question}
 given response: {actual_response}
 ---
 (Answer with 'true' or 'false') Is the given response relevant to the question useful to answer the question? 
-A grounded value of True means that the answer meets all of the criteria.
-A grounded value of False means that the answer does not meet all of the criteria.
+A relevance value of True means that the answer meets all of the criteria.
+A relevance value of False means that the answer does not meet all of the criteria.
 """
 
 
